@@ -41,4 +41,13 @@ describe Mongoid::Timestamps::Created do
       expect(quiz.created_at).to be_within(10).of(Time.now.utc)
     end
   end
+
+  context "when there is a child document with cascading callbacks" do
+    it "runs the created callbacks on the child document" do
+      store = Store.create
+      manager = store.manager
+      expect(manager).to be_persisted
+      expect(manager.created_at).not_to be_nil
+    end
+  end
 end
